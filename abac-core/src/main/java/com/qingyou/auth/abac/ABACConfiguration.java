@@ -20,8 +20,8 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
     public ABACConfiguration() {
     }
 
-    private Information defaultInformation;
-    private Decision defaultDecision;
+    private com.qingyou.auth.api.Information<Visitor, Option, Target, Policy> defaultInformation;
+    private com.qingyou.auth.api.architechure.Decision<Policy, Attribute>  defaultDecision;
     private Class<? extends ABAC> aClass = com.qingyou.auth.abac.ABAC.class;
     private final List<RuleCreator<Object, Object>> ruleCreators = new CopyOnWriteArrayList<>();
     private Supplier<String> strSource;
@@ -29,13 +29,13 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
 
     @Override
     public ABACConfiguration registerInformation(com.qingyou.auth.api.Information<Visitor, Option, Target, Policy> information) {
-        this.defaultInformation = (Information) information;
+        this.defaultInformation = information;
         return this;
     }
 
     @Override
     public ABACConfiguration registerDecision(com.qingyou.auth.api.architechure.Decision<Policy, Attribute> decision) {
-        this.defaultDecision = (Decision) decision;
+        this.defaultDecision = decision;
         return this;
     }
 
@@ -70,12 +70,12 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
     }
 
     @Override
-    public Information getInformation() {
+    public com.qingyou.auth.api.Information<Visitor, Option, Target, Policy> getInformation() {
         return this.defaultInformation;
     }
 
     @Override
-    public Decision getDecision() {
+    public com.qingyou.auth.api.architechure.Decision<Policy, Attribute> getDecision() {
         return this.defaultDecision;
     }
 

@@ -21,7 +21,6 @@
         <dependency>
             <groupId>com.qingyou</groupId>
             <artifactId>abac-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,10 +1,10 @@
 package com.qingyou.auth.abac;
 
 
-import com.qingyou.auth.abac.architecture.Decision;
-import com.qingyou.auth.abac.architecture.Information;
 import com.qingyou.auth.abac.attribute.Attribute;
+import com.qingyou.auth.api.Information;
 import com.qingyou.auth.api.Result;
+import com.qingyou.auth.api.architechure.Decision;
 import com.qingyou.auth.api.architechure.Enforcement;
 
 import java.time.LocalDateTime;
