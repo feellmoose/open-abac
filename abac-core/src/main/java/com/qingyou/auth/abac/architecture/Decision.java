@@ -6,8 +6,8 @@ import com.qingyou.auth.abac.policy.Policy;
 
 public final class Decision implements com.qingyou.auth.api.architechure.Decision<Policy, Attribute> {
 
-    private boolean match(Policy defaultPolicy, Attribute attribute) {
-        for (var defaultVisitor : defaultPolicy.visitors()) {
+    private boolean match(Policy policy, Attribute attribute) {
+        for (var defaultVisitor : policy.visitors()) {
             if (defaultVisitor.id() != null && !defaultVisitor.id().equals(attribute.visitor().id()))
                 return false;
             if (defaultVisitor.name() != null && !defaultVisitor.name().equals(attribute.visitor().name()))
@@ -15,9 +15,11 @@ public final class Decision implements com.qingyou.auth.api.architechure.Decisio
             if (defaultVisitor.code() != null && !defaultVisitor.code().equals(attribute.visitor().code()))
                 return false;
         }
-        if (!defaultPolicy.targets().isEmpty() && !defaultPolicy.targets().contains(attribute.target())) return false;
-        if (!defaultPolicy.options().isEmpty() && !defaultPolicy.options().contains(attribute.option())) return false;
-        var policies = defaultPolicy.context().rules();
+        if (policy.targets() != null && !policy.targets().isEmpty() && !policy.targets().contains(attribute.target()))
+            return false;
+        if (policy.options() != null && !policy.options().isEmpty() && !policy.options().contains(attribute.option()))
+            return false;
+        var policies = policy.context().rules();
         return attribute.context().values().entrySet().stream()
                 .allMatch(entry -> policies.get(entry.getKey()).entrySet().stream().allMatch(e -> e.getValue().judge(entry.getValue())));
     }

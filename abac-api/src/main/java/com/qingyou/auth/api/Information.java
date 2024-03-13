@@ -10,4 +10,5 @@ import java.util.List;
 public interface Information<V extends Visitor, O extends Option, T extends Target, P extends Policy> {
     List<P> policies();
     Information<V, O, T, P> refresh();
+    PolicySource getPolicySource();
 }

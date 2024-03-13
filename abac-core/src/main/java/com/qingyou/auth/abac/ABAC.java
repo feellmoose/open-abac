@@ -7,6 +7,8 @@ import com.qingyou.auth.abac.attribute.Attribute;
 import com.qingyou.auth.api.Result;
 import com.qingyou.auth.api.architechure.Enforcement;
 
+import java.time.LocalDateTime;
+
 
 public final class ABAC implements Enforcement, com.qingyou.auth.api.ABAC {
     private Information information;
@@ -19,10 +21,11 @@ public final class ABAC implements Enforcement, com.qingyou.auth.api.ABAC {
 
     @Override
     public Result<Object> enforce(com.qingyou.auth.api.attribute.Attribute attribute) {
+        if (attribute == null) return Result.error("error");
         var policies = information.policies();
         try {
             if (attribute instanceof Attribute defaultAttribute && this.decision.decide(policies, defaultAttribute)) {
-                return Result.success(1);
+                return Result.success(LocalDateTime.now());
             }
             return Result.error("error");
         } catch (Exception e) {

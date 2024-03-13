@@ -9,10 +9,9 @@ import com.qingyou.auth.api.rule.PolicyContext;
 
 import java.util.List;
 
-public record Policy
-        (List<Visitor> visitors,
-         List<Option> options,
-         List<Target> targets,
-         PolicyContext context,
-         Strategy strategy) implements com.qingyou.auth.api.policy.Policy {
+public record Policy(List<Visitor> visitors,
+                     List<Option> options,
+                     List<Target> targets,
+                     PolicyContext context,
+                     Strategy strategy) implements com.qingyou.auth.api.policy.Policy {
 }

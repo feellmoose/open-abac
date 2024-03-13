@@ -16,7 +16,6 @@ public final class Information implements com.qingyou.auth.api.Information<Visit
 
     public Information(PolicySource policySource) {
         this.policySource = policySource;
-        this.refresh();
     }
 
     @Override
@@ -28,5 +27,10 @@ public final class Information implements com.qingyou.auth.api.Information<Visit
     public Information refresh() {
         this.cachedPolicies = policySource.load();
         return this;
+    }
+
+    @Override
+    public PolicySource getPolicySource(){
+        return this.policySource;
     }
 }

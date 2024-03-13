@@ -4,8 +4,6 @@ import com.qingyou.auth.abac.architecture.Decision;
 import com.qingyou.auth.abac.architecture.Information;
 import com.qingyou.auth.abac.architecture.PolicySource;
 import com.qingyou.auth.abac.exception.AbacBuildException;
-import com.qingyou.auth.abac.serialize.GsonSerializer;
-import com.qingyou.auth.abac.serialize.JsonPolicySerialize;
 
 public class ABACFactory implements com.qingyou.auth.api.ABACFactory<ABACConfiguration> {
 
@@ -14,10 +12,8 @@ public class ABACFactory implements com.qingyou.auth.api.ABACFactory<ABACConfigu
     public ABACFactory() {
         this.abacConfiguration = new ABACConfiguration()
                 .registerDecision(new Decision())
-                .registerInformation(new Information(new PolicySource()
-                        .setPolicySerialize(new JsonPolicySerialize(new GsonSerializer()))));
+                .registerInformation(new Information(null));
     }
-
 
     @Override
     public ABACConfiguration getConfiguration() {
@@ -28,7 +24,12 @@ public class ABACFactory implements com.qingyou.auth.api.ABACFactory<ABACConfigu
     public com.qingyou.auth.api.ABAC create() {
         var des = abacConfiguration.getDecision();
         var inf = abacConfiguration.getInformation();
-        if (des != null && inf != null) {
+        if (inf == null) inf = new Information(new PolicySource()
+                .setStrSource(abacConfiguration.getStrSource())
+                .registerRuleCreators(abacConfiguration.getRuleCreators())
+                .setPolicySerialize(abacConfiguration.getPolicySerialize()));
+        if (des != null && inf.getPolicySource() != null) {
+            inf.refresh();
             return new ABAC(inf, des);
         }
         throw new AbacBuildException("error configuring ABACFactory, please check configuration, decision or information is null");

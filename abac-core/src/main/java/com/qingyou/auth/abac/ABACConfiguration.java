@@ -8,6 +8,12 @@ import com.qingyou.auth.abac.attribute.Target;
 import com.qingyou.auth.abac.attribute.Visitor;
 import com.qingyou.auth.abac.policy.Policy;
 import com.qingyou.auth.api.ABAC;
+import com.qingyou.auth.api.rule.RuleCreator;
+import com.qingyou.auth.api.serialize.PolicySerialize;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Supplier;
 
 public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration<Visitor, Option, Target, Policy, Attribute, Object> {
 
@@ -17,6 +23,9 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
     private Information defaultInformation;
     private Decision defaultDecision;
     private Class<? extends ABAC> aClass = com.qingyou.auth.abac.ABAC.class;
+    private final List<RuleCreator<Object, Object>> ruleCreators = new CopyOnWriteArrayList<>();
+    private Supplier<String> strSource;
+    private PolicySerialize<Policy> policySerialize;
 
     @Override
     public ABACConfiguration registerInformation(com.qingyou.auth.api.Information<Visitor, Option, Target, Policy> information) {
@@ -27,6 +36,30 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
     @Override
     public ABACConfiguration registerDecision(com.qingyou.auth.api.architechure.Decision<Policy, Attribute> decision) {
         this.defaultDecision = (Decision) decision;
+        return this;
+    }
+
+    @Override
+    public ABACConfiguration registerRuleCreators(List<RuleCreator<Object, Object>> ruleCreators) {
+        this.ruleCreators.addAll(ruleCreators);
+        return this;
+    }
+
+    @Override
+    public ABACConfiguration registerRuleCreator(RuleCreator<Object, Object> ruleCreator) {
+        this.ruleCreators.add(ruleCreator);
+        return this;
+    }
+
+    @Override
+    public ABACConfiguration setStrSource(Supplier<String> strSource) {
+        this.strSource = strSource;
+        return this;
+    }
+
+    @Override
+    public ABACConfiguration setPolicySerialize(PolicySerialize<Policy> policySerialize) {
+        this.policySerialize = policySerialize;
         return this;
     }
 
@@ -49,6 +82,18 @@ public class ABACConfiguration implements com.qingyou.auth.api.ABACConfiguration
     @Override
     public Class<? extends ABAC> getABACClass() {
         return this.aClass;
+    }
+
+    public List<RuleCreator<Object, Object>> getRuleCreators() {
+        return ruleCreators;
+    }
+
+    public Supplier<String> getStrSource() {
+        return strSource;
+    }
+
+    public PolicySerialize<Policy> getPolicySerialize() {
+        return policySerialize;
     }
 
 }
