@@ -1,0 +1,10 @@
+[
+  {
+    "visitors": [],
+    "context":{
+      "rules":{
+        "time": {"equal": "12:30"}
+      }
+    }
+  }
+]

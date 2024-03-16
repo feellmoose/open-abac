@@ -1,0 +1,11 @@
+{
+  "server": {
+      "port": 8080
+  },
+  "source": {
+    "mode": "file",
+    "file": {
+      "path": "/path-to-abac-json/abac.json"
+    }
+  }
+}

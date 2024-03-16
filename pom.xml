@@ -4,22 +4,58 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>evento.sast</groupId>
+    <groupId>com.qingyou</groupId>
     <artifactId>open-abac</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${abac.version}</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>abac-core</module>
+        <module>abac-example</module>
+        <module>abac-api</module>
+        <module>abac-server</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <abac.version>1.0-SNAPSHOT</abac.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.qingyou</groupId>
+                <artifactId>abac-api</artifactId>
+                <version>${abac.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qingyou</groupId>
+                <artifactId>abac-core</artifactId>
+                <version>${abac.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qingyou</groupId>
+                <artifactId>abac-server</artifactId>
+                <version>${abac.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.10.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-web</artifactId>
+                <version>4.5.4</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-config</artifactId>
+                <version>4.5.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
 </project>
