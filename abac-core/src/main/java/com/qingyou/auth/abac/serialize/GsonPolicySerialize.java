@@ -26,6 +26,7 @@ public class GsonPolicySerialize implements PolicySerialize<Policy> {
         public static PolicyDTO fromPolicy(Policy policy, List<RuleCreator<Object, Object>> creators) {
             Map<String, Map<String, Object>> rules = new HashMap<>();
             var context = policy.context();
+            if(context.rules() == null) throw new AbacBuildException("no policies context rules in read policies");
             context.rules().forEach((name, value) -> {
                 var map = rules.getOrDefault(name, new HashMap<>());
                 value.forEach((ruleType, rule) -> {
@@ -40,6 +41,7 @@ public class GsonPolicySerialize implements PolicySerialize<Policy> {
         public Policy toPolicy(List<RuleCreator<Object, Object>> creators) {
             Map<String, Map<String, Rule<Object>>> rules = new HashMap<>();
             var context = this.context;
+            if(context.rules() == null) throw new AbacBuildException("no policies context rules in this file");
             context.rules().forEach((name, value) -> {
                 var map = rules.getOrDefault(name, new HashMap<>());
                 value.forEach((ruleType, param) -> {

@@ -1,9 +1,13 @@
 package com.qingyou.abac.server.config;
 
+import com.qingyou.auth.abac.policy.Policy;
+import io.vertx.core.json.JsonArray;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class Configuration {
+public class ApplicationConfiguration {
     private ServerConfiguration server;
     private SourceConfiguration source;
 
@@ -34,7 +38,8 @@ public class Configuration {
 
     @Data
     public static class ServerConfiguration {
-        private String url;
+        private Integer port;
+        private Integer url;
     }
 
 }

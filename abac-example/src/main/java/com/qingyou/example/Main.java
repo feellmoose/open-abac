@@ -8,6 +8,7 @@ import com.qingyou.auth.abac.attribute.Attribute;
 import com.qingyou.auth.abac.attribute.Option;
 import com.qingyou.auth.abac.attribute.Target;
 import com.qingyou.auth.abac.attribute.Visitor;
+import com.qingyou.auth.abac.rule.RuleCreators;
 import com.qingyou.auth.abac.serialize.GsonPolicySerialize;
 import com.qingyou.auth.api.ABAC;
 import com.qingyou.auth.api.policy.AttributeContext;
@@ -22,23 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
         ABACFactory abacFactory = new ABACFactory();
-        var list = List.of(new RuleCreator<>() {
-
-            @Override
-            public Rule<Object> create(String name, Object param) {
-                return new Rule.Builder<>()
-                        .withName(name)
-                        .withParam(param)
-                        .rule(Object::equals)
-                        .build();
-            }
-
-            @Override
-            public String ruleType() {
-                return "equal";
-            }
-        });
-
+        var list = List.of(RuleCreators.equal(),RuleCreators.between());
 
         abacFactory.getConfiguration()
                 .registerInformation(new Information(new PolicySource()
@@ -48,12 +33,12 @@ public class Main {
                                 """
                                         [{
                                            "visitors":[{
-                                                "id":2
+                                                "id":1
                                                 }
                                            ],
                                            "context":{
                                                "rules":{
-                                                   "time":{"equal":"12:30"}
+                                                   "time":{"between":["11:30","15:20"]}
                                                }
                                            },
                                            "strategy":"approval"
@@ -64,8 +49,8 @@ public class Main {
                 new Visitor(1L, "1212", "name", Visitor.Role.root),
                 new Option("name"),
                 new Target("name", 12),
-                new AttributeContext(Map.of("time", "12:30")));
-        System.out.println(abac.enforce(attribute).success());
+                new AttributeContext(Map.of("time", "11:20")));
+        System.out.println(abac.enforce(attribute));
 
 
 
