@@ -74,3 +74,5 @@ public class Main {
     }
 }
 ```
+
+> Maybe Kotlin is more suitable for this project and we will trying to refactor this project using Kotlin...
