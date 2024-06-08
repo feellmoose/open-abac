@@ -7,14 +7,13 @@ import com.qingyou.auth.abac.policy.Policy;
 public final class Decision implements com.qingyou.auth.api.architechure.Decision<Policy, Attribute> {
 
     private boolean match(Policy policy, Attribute attribute) {
-        for (var defaultVisitor : policy.visitors()) {
+        if (policy.visitors().stream().noneMatch(defaultVisitor -> {
             if (defaultVisitor.id() != null && !defaultVisitor.id().equals(attribute.visitor().id()))
                 return false;
             if (defaultVisitor.name() != null && !defaultVisitor.name().equals(attribute.visitor().name()))
                 return false;
-            if (defaultVisitor.code() != null && !defaultVisitor.code().equals(attribute.visitor().code()))
-                return false;
-        }
+            return defaultVisitor.code() == null || defaultVisitor.code().equals(attribute.visitor().code());
+        })) return false;
         if (policy.targets() != null && !policy.targets().isEmpty() && !policy.targets().contains(attribute.target()))
             return false;
         if (policy.options() != null && !policy.options().isEmpty() && !policy.options().contains(attribute.option()))
